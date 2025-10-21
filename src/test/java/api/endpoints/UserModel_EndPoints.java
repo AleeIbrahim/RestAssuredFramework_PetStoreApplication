@@ -20,7 +20,7 @@ public class UserModel_EndPoints {
 			.accept(ContentType.JSON)
 			.body(myPayload)
 		.when()
-			.post(Routes.userPostURL);
+			.post(_Routes_.userPostURL);
 		
 		return myResponse;
 	}
@@ -35,7 +35,7 @@ public class UserModel_EndPoints {
 			.pathParam("username", myUsername)
 			.body(myPayload)
 		.when()
-			.put(Routes.userUpdateURL);
+			.put(_Routes_.userUpdateURL);
 		
 		return myResponse;
 	}
@@ -47,7 +47,7 @@ public class UserModel_EndPoints {
 		given()
 			.pathParam("username", myUsername)
 		.when()
-			.get(Routes.userGetURL);
+			.get(_Routes_.userGetURL);
 		
 		return myResponse;
 	}
@@ -59,9 +59,32 @@ public class UserModel_EndPoints {
 		given()
 			.pathParam("username", myUsername)
 		.when()
-			.delete(Routes.userDeleteURL);
+			.delete(_Routes_.userDeleteURL);
 		
 		return myResponse;
 	}
+
+    /* Implementation for Login Request (Get) */
+    public static Response loginUser(String myUsername, String myPassword)
+    {
+        Response myResponse =
+                given()
+                        .queryParam("username", myUsername)
+                        .queryParam("password", myPassword)
+                        .when()
+                        .get(_Routes_.userLoginURL);
+
+        return myResponse;
+    }
+
+    /* Implementation for Logout current logged-in user Request (Get) */
+    public static Response logoutCurrentLoggedUser()
+    {
+        Response myResponse =
+                given()
+                        .get(_Routes_.userLogoutURL);
+
+        return myResponse;
+    }
 	
 }

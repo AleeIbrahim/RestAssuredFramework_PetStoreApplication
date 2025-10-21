@@ -20,7 +20,7 @@ public class PetModel_EndPoints {
 			.accept(ContentType.JSON)
 			.body(myPayload)
 		.when()
-			.post(Routes.userPostURL);
+			.post(_Routes_.userPostURL);
 		
 		return myResponse;
 	}
@@ -35,7 +35,7 @@ public class PetModel_EndPoints {
 			.pathParam("username", myUsername)
 			.body(myPayload)
 		.when()
-			.put(Routes.userUpdateURL);
+			.put(_Routes_.userUpdateURL);
 		
 		return myResponse;
 	}
@@ -47,7 +47,7 @@ public class PetModel_EndPoints {
 		given()
 			.pathParam("username", myUsername)
 		.when()
-			.get(Routes.userGetURL);
+			.get(_Routes_.userGetURL);
 		
 		return myResponse;
 	}
@@ -59,7 +59,7 @@ public class PetModel_EndPoints {
 		given()
 			.pathParam("username", myUsername)
 		.when()
-			.delete(Routes.userDeleteURL);
+			.delete(_Routes_.userDeleteURL);
 		
 		return myResponse;
 	}

@@ -2,7 +2,7 @@ package api.endpoints;
 
 /* Routes class contains the URLs to be used */
 
-public class Routes {
+public class _Routes_ {
 	
 	public static String baseURL = "https://petstore.swagger.io/v2";
 	
@@ -11,6 +11,8 @@ public class Routes {
 	public static String userGetURL = baseURL + "/user/{username}"; /* {username} --> acts as Path Parameter */
 	public static String userUpdateURL = baseURL + "/user/{username}";
 	public static String userDeleteURL = baseURL + "/user/{username}";
+    public static String userLoginURL = baseURL + "/user/login";
+    public static String userLogoutURL = baseURL + "/user/logout";
 	
 	// Store Model
 	public static String storePostURL = baseURL + "/store";

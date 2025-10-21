@@ -30,27 +30,46 @@ public class UserModel_TestCases {
 	}
 	
 	@Test (priority = 1)
-	public void TC01_verifyCreateUser()
+	public void TC01_verifyCreateUserRequest()
 	{
 		Response myResponse = UserModel_EndPoints.createUser(userPayload);
-		myResponse.then().log().all();
-		
+//		myResponse.then().log().all();
+
 		/* Verify the Status Code */
 		Assert.assertEquals(myResponse.getStatusCode(), 200);
+
+        /* Verify the Status Code */
+        Assert.assertEquals(myResponse.contentType(), "application/json");
 	}
 	
 	@Test (priority = 2)
-	public void TC02_verifyReadUser()
+	public void TC02_verifyReadUserRequest()
 	{
 		Response myResponse = UserModel_EndPoints.readUser(this.userPayload.getUsername());
-		myResponse.then().log().all();
+//        Response myResponse = UserModel_EndPoints.readUser("jermaine.doyle");
+        System.out.println("==============================");
+        System.out.println(this.userPayload.getUsername());
+        System.out.println("==============================");
+//		myResponse.then().log().all();
 		
 		/* Verify the Status Code */
 		Assert.assertEquals(myResponse.getStatusCode(), 200);
+
+        /* Verify the correct Username is fetched */
+        String userName  = myResponse.body().jsonPath().getString("username");
+        Assert.assertEquals(userName, this.userPayload.getUsername());
+
+        /* Verify the correct Firstname is fetched */
+        String firstName  = myResponse.body().jsonPath().getString("firstname");
+        Assert.assertEquals(firstName, this.userPayload.getFirstName());
+
+        /* Verify the correct Lastname is fetched */
+        String lastName  = myResponse.body().jsonPath().getString("lastname");
+        Assert.assertEquals(lastName, this.userPayload.getLastName());
 	}
 	
 	@Test (priority = 3)
-	public void TC03_verifyUpdateUser()
+	public void TC03_verifyUpdateUserRequest()
 	{
 		/* Change the values to be changed (By regenerating them) */
 		userPayload.setFirstName(myFaker.name().firstName());
@@ -64,19 +83,50 @@ public class UserModel_TestCases {
 		Assert.assertEquals(myResponse.getStatusCode(), 200);
 		
 		/* Verify changed values are reflected */
-		//Assert.assertEquals(myResponse.getStatusCode(), this.userPayload.getFirstName());
-		
+        String firstName  = myResponse.body().jsonPath().getString("firstname");
+        String lastName  = myResponse.body().jsonPath().getString("lastname");
+        String eMail  = myResponse.body().jsonPath().getString("email");
+
+		Assert.assertEquals(firstName, this.userPayload.getFirstName());
+        Assert.assertEquals(lastName, this.userPayload.getLastName());
+        Assert.assertEquals(eMail, this.userPayload.getEmail());
 	}
 	
 	@Test (priority = 4)
-	public void TC04_verifyDeleteUser()
+	public void TC04_verifyDeleteUserRequest()
 	{
-		Response myResponse = UserModel_EndPoints.deleteUser(this.userPayload.getUsername());
-		myResponse.then().log().all();
+		Response myDeleteResponse = UserModel_EndPoints.deleteUser(this.userPayload.getUsername());
+        myDeleteResponse.then().log().all();
 		
 		/* Verify the Status Code */
-		Assert.assertEquals(myResponse.getStatusCode(), 200);
+		Assert.assertEquals(myDeleteResponse.getStatusCode(), 200);
+
+        /* Verify User Not Found */
+        Response myReadResponse = UserModel_EndPoints.readUser(this.userPayload.getUsername());
+        Assert.assertEquals(myReadResponse.getStatusCode(), 404);
 	}
+
+    @Test ()
+    public void TC05_verifyUserLogin()
+    {
+        Response myResponse = UserModel_EndPoints.loginUser(this.userPayload.getUsername(),
+                                                            this.userPayload.getPassword());
+        myResponse.then().log().all();
+
+        /* Verify the Status Code */
+        Assert.assertEquals(myResponse.getStatusCode(), 200);
+    }
+
+    @Test ()
+    public void TC06_verifyLogoutCurrentLoggedInUser()
+    {
+        Response myResponse = UserModel_EndPoints.logoutCurrentLoggedUser();
+        myResponse.then().log().all();
+
+        /* Verify the Status Code */
+        Assert.assertEquals(myResponse.getStatusCode(), 200);
+    }
+
 	
 	
 	
